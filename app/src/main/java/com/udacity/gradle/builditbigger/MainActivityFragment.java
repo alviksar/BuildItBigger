@@ -12,8 +12,6 @@ import android.widget.Button;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import xyz.alviksar.jokelibrary.Joker;
-
 
 /**
  * A placeholder fragment containing a simple view.
@@ -28,22 +26,7 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        Button tellJokeButton = root.findViewById(R.id.btn_tell_joke);
-        tellJokeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  Toast.makeText(getActivity(), Joker.getJoke(), Toast.LENGTH_SHORT).show();
-                // Get a joke
-                String joke = Joker.getJoke();
 
-                new EndpointsAsyncTask().execute(new Pair<Context, String>(getContext(), "Alexey"));
-
-                // Start an intent
-//                Intent intent = new Intent(getContext(), JokeActivity.class);
-//                intent.putExtra(JokeActivity.JOKE_TEXT_EXTRA, joke);
-//                startActivity(intent);
-            }
-        });
 
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
         // Create an ad request. Check logcat output for the hashed device ID to
