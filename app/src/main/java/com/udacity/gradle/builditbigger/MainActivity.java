@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +27,25 @@ import java.io.IOException;
 import xyz.alviksar.jokedisplaylibrary.JokeActivity;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String MAIN_ACTIVITY_IDLING_RESOURCE_NAME
+            = "main_activity_idling_resource_name";
+    // The Idling Resource which will be null in production.
+    @Nullable
+    private CountingIdlingResource mIdlingResource = null;
+
+    /**
+     * Only called from test, creates and returns a new CountingIdlingResource.
+     */
+    @VisibleForTesting
+    public IdlingResource getIdlingResource() {
+
+        if (mIdlingResource == null ) {
+            mIdlingResource = new CountingIdlingResource(MainActivity.MAIN_ACTIVITY_IDLING_RESOURCE_NAME);
+        }
+        return mIdlingResource;
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... voids) {
+            if (mIdlingResource != null)
+                mIdlingResource.increment();
             if (myApiService == null) {  // Only do this once
                 MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                         new AndroidJsonFactory(), null)
@@ -111,5 +136,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, JokeActivity.class);
         intent.putExtra(JokeActivity.JOKE_TEXT_EXTRA, joke);
         startActivity(intent);
+        if (mIdlingResource != null)
+            mIdlingResource.decrement();
     }
 }

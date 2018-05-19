@@ -12,6 +12,7 @@ public class JokeActivity extends AppCompatActivity {
 
     public static final String JOKE_TEXT_EXTRA = "joke_text_extra";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
