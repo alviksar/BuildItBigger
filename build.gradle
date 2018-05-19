@@ -23,15 +23,44 @@ allprojects {
 
 }
 
+
 /**
  * Starts the GCE dev server, runs all the Android tests, and shuts down the dev server.
+ * https://stackoverflow.com/q/47384356/9682456
  */
-task runAllAndroidTests {
-   // dependsOn appengineStart
+task runAndroidTests {
+    group 'verification'
+    dependsOn 'startBackend', 'runInstrumentedTests', 'stopBackend'
     doLast {
-//        backend.appengineStart
-//        test
-//        backend.appengineStop
-        println('Task runAllAndroidTests finished');
+        println 'Tests carried out and GCE dev server shut down.'
     }
 }
+
+task startBackend {
+    dependsOn ':backend:appengineStart'
+    doLast {
+        println 'The the GCE dev server started.'
+    }
+}
+
+/**
+ *  Runs instrumented tests
+ */
+task runInstrumentedTests {
+    mustRunAfter 'startBackend'
+    dependsOn ':app:connectedAndroidTest'
+    doLast {
+        println 'The instrumented tests finished.'
+    }
+}
+
+task stopBackend {
+mustRunAfter 'runInstrumentedTests'
+dependsOn ':backend:appengineStop'
+    doLast {
+        println 'The the GCE dev server stopped.'
+    }
+}
+
+// runInstrumentedTests.finalizedBy ":backend:appengineStop"
+

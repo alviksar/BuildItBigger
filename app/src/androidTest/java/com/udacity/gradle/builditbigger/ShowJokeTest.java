@@ -23,7 +23,6 @@ import static org.hamcrest.core.IsNot.not;
 
 /**
  * Instrumented test, which will check that joke is displayed on an Android device.
- *
  */
 @RunWith(AndroidJUnit4.class)
 public class ShowJokeTest {
@@ -40,25 +39,34 @@ public class ShowJokeTest {
     @Before
     public void registerIdlingResource() {
         mIdlingResource = mMainActivityTestRule.getActivity().getIdlingResource();
-//        mIdlingResource
-//                = new CountingIdlingResource(MainActivity.MAIN_ACTIVITY_IDLING_RESOURCE_NAME);
-        // To prove that the test fails, omit this call:
         IdlingRegistry.getInstance().register(mIdlingResource);
 
     }
 
 
-    /*
-     Check that an ingredients view is displayed after click on the recipe list
+    /**
+     * Check that a joke is displayed after click on the button
      */
     @Test
     public void clickOnTellJokeButton_checkJokeIsNotEmpty() {
 
-        // Scroll to the position 1 and click on it.
+        // Click the "Tell Joke" button
         onView(withId(R.id.btn_tell_joke)).perform(click());
 
-        // Check if next activity displayed
+        // Check if a joke is displayed
         onView(withId(R.id.tv_joke)).check(matches(not(withText(""))));
+
+    }
+
+
+    /**
+     * Check that a progress bar is gone
+     * */
+    @Test
+    public void checkProgressBarIsGone() {
+
+       // Check if a joke is displayed
+        onView(withId(R.id.pb_wait_joke)).check(matches(not(isDisplayed())));
 
     }
 

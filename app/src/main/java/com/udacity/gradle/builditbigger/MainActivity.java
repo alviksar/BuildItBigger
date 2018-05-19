@@ -10,6 +10,7 @@ import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,8 @@ import xyz.alviksar.jokedisplaylibrary.JokeActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
     public static final String MAIN_ACTIVITY_IDLING_RESOURCE_NAME
             = "main_activity_idling_resource_name";
 
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @VisibleForTesting
     public IdlingResource getIdlingResource() {
 
-        if (mIdlingResource == null ) {
+        if (mIdlingResource == null) {
             mIdlingResource = new CountingIdlingResource(MainActivity.MAIN_ACTIVITY_IDLING_RESOURCE_NAME);
         }
         return mIdlingResource;
@@ -125,9 +128,10 @@ public class MainActivity extends AppCompatActivity {
 
                 return myApiService.tellJoke().execute().getData();
 
-                //   return myApiService.tellJoke().execute().getData();
             } catch (IOException e) {
-                return e.getMessage();
+                Log.e(LOG_TAG, Log.getStackTraceString(e));
+                return "";
+//              return e.getMessage();
             }
         }
 
