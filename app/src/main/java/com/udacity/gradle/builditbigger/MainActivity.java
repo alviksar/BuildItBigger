@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -30,9 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String MAIN_ACTIVITY_IDLING_RESOURCE_NAME
             = "main_activity_idling_resource_name";
+
     // The Idling Resource which will be null in production.
     @Nullable
     private CountingIdlingResource mIdlingResource = null;
+
+    ProgressBar progressBar;
 
     /**
      * Only called from test, creates and returns a new CountingIdlingResource.
@@ -63,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                 new EndpointsAsyncTask().execute();
             }
         });
+
+        progressBar = findViewById(R.id.pb_wait_joke);
     }
 
 
@@ -116,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             try {
+
                 return myApiService.tellJoke().execute().getData();
 
                 //   return myApiService.tellJoke().execute().getData();
@@ -124,9 +131,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
 
         @Override
         protected void onPostExecute(String result) {
+            progressBar.setVisibility(View.GONE);
             startShowJokeActivity(result);
         }
     }
