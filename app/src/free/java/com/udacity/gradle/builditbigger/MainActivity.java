@@ -78,29 +78,11 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
             public void onAdClosed() {
                 new EndpointsAsyncTask(MainActivity.this).execute();
                 // Load the next interstitial.
-//                if (mIdlingResource != null)
-//                    mIdlingResource.increment();
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
             }
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-//                if (mIdlingResource != null)
-//                    mIdlingResource.decrement();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-//                if (mIdlingResource != null)
-//                    mIdlingResource.decrement();
-            }
-
         });
 
-//        if (mIdlingResource != null)
-//            mIdlingResource.increment();
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
