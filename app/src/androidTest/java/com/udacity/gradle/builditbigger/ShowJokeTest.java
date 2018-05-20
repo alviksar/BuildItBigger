@@ -4,6 +4,7 @@ import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.text.TextUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -47,12 +48,13 @@ public class ShowJokeTest {
      */
     @Test
     public void clickOnTellJokeButton_checkJokeIsNotEmpty() {
+        if (TextUtils.equals(BuildConfig.FLAVOR, "paid")) {
+            // Click the "Tell Joke" button
+            onView(withId(R.id.btn_tell_joke)).perform(click());
 
-        // Click the "Tell Joke" button
-        onView(withId(R.id.btn_tell_joke)).perform(click());
-
-        // Check if a joke is displayed
-        onView(withId(R.id.tv_joke)).check(matches(not(withText(""))));
+            // Check if a joke is displayed
+            onView(withId(R.id.tv_joke)).check(matches(not(withText(""))));
+        }
 
     }
 

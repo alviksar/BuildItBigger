@@ -1,8 +1,7 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -12,19 +11,27 @@ import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
 
-/**
- * Makes the request to the backend.
- * https://github.com/GoogleCloudPlatform/gradle-appengine-templates/tree/77e9910911d5412e5efede5fa681ec105a0f02ad/HelloEndpoints#2-connecting-your-android-app-to-the-backend
- */
+public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
-class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+    private static final String LOG_TAG = EndpointsAsyncTask.class.getSimpleName();
 
-    private static MyApi myApiService = null;
-    private Context context;
+    public interface edgedTasks {
+        void preExecute();
+        void postExecute(String result);
+    }
+
+    private edgedTasks mEdgedTasks;
+
+    private MyApi myApiService = null;
+
+    public EndpointsAsyncTask(edgedTasks edgedTasks) {
+        this.mEdgedTasks = edgedTasks;
+    }
 
     @Override
     protected String doInBackground(Void... voids) {
-        if(myApiService == null) {  // Only do this once
+
+        if (myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
                     // options for running against local devappserver
@@ -43,18 +50,27 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
         }
 
         try {
+
             return myApiService.tellJoke().execute().getData();
 
-         //   return myApiService.tellJoke().execute().getData();
         } catch (IOException e) {
-            return e.getMessage();
+            Log.e(LOG_TAG, Log.getStackTraceString(e));
+            return "";
+//              return e.getMessage();
         }
     }
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mEdgedTasks.preExecute();
+
+    }
 
 
     @Override
     protected void onPostExecute(String result) {
-        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+        mEdgedTasks.postExecute(result);
+
     }
 }
