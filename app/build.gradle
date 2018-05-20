@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.google.api-client:google-api-client:1.23.0'
     implementation 'com.google.http-client:google-http-client-android:1.23.0'
     implementation 'com.google.code.findbugs:jsr305:3.0.1'
+
     freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
@@ -73,7 +74,9 @@ dependencies {
     //        exclude group: 'com.android.support', module: 'support:animated-vector-drawable'
     //    })
     implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
+
     androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+
     implementation project(':jokeDisplayLibrary')
 }
 
@@ -92,7 +95,7 @@ task runAndroidTests {
 task startBackend {
     dependsOn ':backend:appengineStart'
     doLast {
-        println 'The the GCE dev server started.'
+        println 'GCE dev server started.'
     }
 }
 
@@ -103,7 +106,7 @@ task runInstrumentedTests {
     mustRunAfter 'startBackend'
     dependsOn ':app:connectedAndroidTest'
     doLast {
-        println 'The instrumented tests finished.'
+        println 'Instrumented test ran to completion.'
     }
 }
 
@@ -111,7 +114,7 @@ task stopBackend {
     mustRunAfter 'runInstrumentedTests'
     dependsOn ':backend:appengineStop'
     doLast {
-        println 'The the GCE dev server stopped.'
+        println 'GCE dev server stopped.'
     }
 }
 

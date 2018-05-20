@@ -14,11 +14,13 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.IsNot.not;
+
 
 /**
  * Instrumented test, which will check that joke is displayed on an Android device.
@@ -47,25 +49,38 @@ public class ShowJokeTest {
      * Check that a joke is displayed after click on the button
      */
     @Test
-    public void clickOnTellJokeButton_checkJokeIsNotEmpty() {
-        if (TextUtils.equals(BuildConfig.FLAVOR, "paid")) {
-            // Click the "Tell Joke" button
-            onView(withId(R.id.btn_tell_joke)).perform(click());
+    public void clickOnTellJokeButton_checkJokeIsNotEmpty() throws InterruptedException {
+//        if (TextUtils.equals(BuildConfig.FLAVOR, "paid")) {
+        // Click the "Tell Joke" button
+        onView(withId(R.id.btn_tell_joke)).perform(click());
 
-            // Check if a joke is displayed
-            onView(withId(R.id.tv_joke)).check(matches(not(withText(""))));
+        // Close ad's activity
+        if (TextUtils.equals(BuildConfig.FLAVOR, "free")) {
+            onView(withId(R.id.adView)).check(matches(isDisplayed()));
+            onView(withId(R.id.adView)).perform(pressBack());
+//            ViewInteraction imageButton = onView(
+//                    allOf(withContentDescription("Interstitial close button"), isDisplayed()));
+//            imageButton.perform(click());
+            //Espresso.pressBack();
+            //      onView(isRoot()).perform(pressBack());
+            //   Thread.sleep(5000); // Necessary time you needed to show your ads, for example 5 seconds
+
+// After that, press back button to go back
+//            UiDevice mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+//            mDevice.pressBack();
         }
-
+        //  Check if a joke is displayed
+        onView(withId(R.id.tv_joke)).check(matches(not(withText(""))));
     }
 
 
     /**
      * Check that a progress bar is gone
-     * */
+     */
     @Test
     public void checkProgressBarIsGone() {
 
-       // Check if a joke is displayed
+        // Check if a joke is displayed
         onView(withId(R.id.pb_wait_joke)).check(matches(not(isDisplayed())));
 
     }

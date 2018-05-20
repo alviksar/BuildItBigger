@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
     CountingIdlingResource mIdlingResource = null;
 
     ProgressBar progressBar;
+    AdView mAdView;
 
     private InterstitialAd mInterstitialAd;
 
@@ -43,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
     public IdlingResource getIdlingResource() {
 
         if (mIdlingResource == null) {
-            mIdlingResource = new CountingIdlingResource(MainActivity.MAIN_ACTIVITY_IDLING_RESOURCE_NAME);
+            mIdlingResource
+                    = new CountingIdlingResource(MainActivity.MAIN_ACTIVITY_IDLING_RESOURCE_NAME);
         }
         return mIdlingResource;
 
@@ -55,23 +58,51 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.pb_wait_joke);
 
+        mAdView = findViewById(R.id.adView);
+        // Create an ad request. Check logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
+
         MobileAds.initialize(this,
                 "ca-app-pub-3940256099942544~3347511713");
 
         // Load interstitial ads
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
                 new EndpointsAsyncTask(MainActivity.this).execute();
                 // Load the next interstitial.
+//                if (mIdlingResource != null)
+//                    mIdlingResource.increment();
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
             }
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+//                if (mIdlingResource != null)
+//                    mIdlingResource.decrement();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+//                if (mIdlingResource != null)
+//                    mIdlingResource.decrement();
+            }
 
         });
+
+//        if (mIdlingResource != null)
+//            mIdlingResource.increment();
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
 
         Button tellJokeButton = findViewById(R.id.btn_tell_joke);
 
@@ -139,4 +170,8 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
 
     }
 
+    @VisibleForTesting
+    AdView getAdView() {
+        return mAdView;
+    }
 }
