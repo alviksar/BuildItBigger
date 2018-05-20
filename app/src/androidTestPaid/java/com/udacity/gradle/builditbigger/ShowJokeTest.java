@@ -23,7 +23,7 @@ import static org.hamcrest.core.IsNot.not;
 
 
 /**
- * Instrumented test, which will check that joke is displayed on an Android device.
+ * Checks that joke is displayed on an Android device.
  */
 @RunWith(AndroidJUnit4.class)
 public class ShowJokeTest {
@@ -41,7 +41,6 @@ public class ShowJokeTest {
     public void registerIdlingResource() {
         mIdlingResource = mMainActivityTestRule.getActivity().getIdlingResource();
         IdlingRegistry.getInstance().register(mIdlingResource);
-
     }
 
 
@@ -50,7 +49,6 @@ public class ShowJokeTest {
      */
     @Test
     public void clickOnTellJokeButton_checkJokeIsNotEmpty() {
-//        if (TextUtils.equals(BuildConfig.FLAVOR, "paid")) {
         // Click the "Tell Joke" button
         onView(withId(R.id.btn_tell_joke)).perform(click());
 

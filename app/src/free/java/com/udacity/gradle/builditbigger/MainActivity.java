@@ -24,8 +24,6 @@ import xyz.alviksar.jokedisplaylibrary.JokeActivity;
 
 public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.edgedTasks {
 
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
     public static final String MAIN_ACTIVITY_IDLING_RESOURCE_NAME
             = "main_activity_idling_resource_name";
 
@@ -34,23 +32,11 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
     CountingIdlingResource mIdlingResource = null;
 
     ProgressBar progressBar;
+
     AdView mAdView;
 
     private InterstitialAd mInterstitialAd;
 
-    /**
-     * Only called from test, creates and returns a new CountingIdlingResource.
-     */
-    @VisibleForTesting
-    public IdlingResource getIdlingResource() {
-
-        if (mIdlingResource == null) {
-            mIdlingResource
-                    = new CountingIdlingResource(MainActivity.MAIN_ACTIVITY_IDLING_RESOURCE_NAME);
-        }
-        return mIdlingResource;
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -152,6 +137,22 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
 
     }
 
+    /**
+     * Only called from test. Creates and returns a new CountingIdlingResource.
+     */
+    @VisibleForTesting
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource
+                    = new CountingIdlingResource(MainActivity.MAIN_ACTIVITY_IDLING_RESOURCE_NAME);
+        }
+        return mIdlingResource;
+
+    }
+
+    /**
+     *  For test interstitial ad view.
+     */
     @VisibleForTesting
     AdView getAdView() {
         return mAdView;

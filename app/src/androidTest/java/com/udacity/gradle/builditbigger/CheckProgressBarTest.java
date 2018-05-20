@@ -15,7 +15,7 @@ import static org.hamcrest.core.IsNot.not;
 
 
 /**
- * Instrumented test, which will check progress bar is not displayed on an Android device.
+ * Checks if progress bar is not displayed on an Android device.
  */
 @RunWith(AndroidJUnit4.class)
 public class CheckProgressBarTest {

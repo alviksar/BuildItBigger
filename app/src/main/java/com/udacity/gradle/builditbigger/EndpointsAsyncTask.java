@@ -7,9 +7,14 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+
 import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
+
+/**
+ *  Retrieves jokes from your Java library.
+ */
 
 public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
@@ -24,7 +29,7 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
     private MyApi myApiService = null;
 
-    public EndpointsAsyncTask(edgedTasks edgedTasks) {
+    EndpointsAsyncTask(edgedTasks edgedTasks) {
         this.mEdgedTasks = edgedTasks;
     }
 
@@ -66,7 +71,6 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
         mEdgedTasks.preExecute();
 
     }
-
 
     @Override
     protected void onPostExecute(String result) {
