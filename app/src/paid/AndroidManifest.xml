@@ -24,6 +24,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="xyz.alviksar.jokedisplaylibrary.JokeActivity"
+            android:parentActivityName=".MainActivity" />
+
     </application>
 
 </manifest>

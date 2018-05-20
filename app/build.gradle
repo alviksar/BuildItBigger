@@ -37,42 +37,82 @@ android {
     productFlavors {
         free {
             dimension 'tier'
-            applicationId 'com.udacity.gradle.builditbigge.free'
+            applicationId 'com.udacity.gradle.builditbigger.free'
         }
-
         paid {
             dimension 'tier'
-            applicationId 'com.udacity.gradle.builditbigge.paid'
+            applicationId 'com.udacity.gradle.builditbigger.paid'
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     endpointsServer project(path: ':backend', configuration: 'endpoints')
-    implementation('com.android.support:appcompat-v7:27.1.1', {
-        exclude group: 'com.android.support', module: 'customtabs'
-    })
-
+    //    implementation('com.android.support:appcompat-v7:27.1.1', {
+    //        exclude group: 'com.android.support', module: 'customtabs'
+    //    })
+    implementation('com.android.support:appcompat-v7:27.1.1',
+            {
+                exclude group: 'com.android.support', module: 'support:animated-vector-drawable'
+            })
     implementation 'com.google.api-client:google-api-client:1.23.0'
     implementation 'com.google.http-client:google-http-client-android:1.23.0'
     implementation 'com.google.code.findbugs:jsr305:3.0.1'
-
     freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation('com.android.support.test:rules:1.0.2', {
-        exclude group: 'com.android.support', module: 'support:support-vector-drawable'
-    });
-
+    androidTestImplementation('com.android.support.test:rules:1.0.2',
+            {
+                exclude group: 'com.android.support', module: 'support:animated-vector-drawable'
+            })
+    //    androidTestImplementation('com.android.support.test:rules:1.0.2', {
+    //        exclude group: 'com.android.support', module: 'support:animated-vector-drawable'
+    //    })
     implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
-
     androidTestImplementation 'com.android.support:support-annotations:27.1.1'
-
     implementation project(':jokeDisplayLibrary')
 }
 
+/**
+ * Starts the GCE dev server, runs all the Android tests, and shuts down the dev server.
+ * https://stackoverflow.com/q/47384356/9682456
+ */
+task runAndroidTests {
+    group 'verification'
+    dependsOn 'startBackend', 'runInstrumentedTests', 'stopBackend'
+    doLast {
+        println 'Tests carried out and GCE dev server shut down.'
+    }
+}
+
+task startBackend {
+    dependsOn ':backend:appengineStart'
+    doLast {
+        println 'The the GCE dev server started.'
+    }
+}
+
+/**
+ *  Runs instrumented tests
+ */
+task runInstrumentedTests {
+    mustRunAfter 'startBackend'
+    dependsOn ':app:connectedAndroidTest'
+    doLast {
+        println 'The instrumented tests finished.'
+    }
+}
+
+task stopBackend {
+    mustRunAfter 'runInstrumentedTests'
+    dependsOn ':backend:appengineStop'
+    doLast {
+        println 'The the GCE dev server stopped.'
+    }
+}
+
+// runInstrumentedTests.finalizedBy ":backend:appengineStop"
