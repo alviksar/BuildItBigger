@@ -13,19 +13,20 @@ import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 import java.io.IOException;
 
 /**
- *  Retrieves jokes from your Java library.
+ *  Loads jokes from GCE module
  */
 
-public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
     private static final String LOG_TAG = EndpointsAsyncTask.class.getSimpleName();
 
+    // Pre and post execute tasks
     public interface edgedTasks {
         void preExecute();
         void postExecute(String result);
     }
 
-    private edgedTasks mEdgedTasks;
+    private final edgedTasks mEdgedTasks;
 
     private MyApi myApiService = null;
 

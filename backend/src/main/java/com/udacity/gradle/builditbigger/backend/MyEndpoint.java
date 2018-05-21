@@ -33,7 +33,7 @@ public class MyEndpoint {
     }
 
     /**
-     * A endpoint method that tells a joke
+     * A endpoint method that tells a joke from xyz.alviksar.jokelibrary
      */
     @ApiMethod(name = "tellJoke")
     public MyBean tellJoke() {

@@ -25,9 +25,10 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
 
     // The Idling Resource which will be null in production.
     @Nullable
+    private
     CountingIdlingResource mIdlingResource = null;
 
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
 
     /**
      * Only called from test, creates and returns a new CountingIdlingResource.
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
     }
 
 
-    public void startShowJokeActivity(String joke) {
+    private void startShowJokeActivity(String joke) {
         // Start an intent
         Intent intent = new Intent(MainActivity.this, JokeActivity.class);
         intent.putExtra(JokeActivity.JOKE_TEXT_EXTRA, joke);

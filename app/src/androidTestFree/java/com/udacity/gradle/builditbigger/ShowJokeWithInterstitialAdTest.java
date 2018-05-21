@@ -26,6 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.IsNot.not;
 /**
+ * Connected tests to verify that the AsyncTask is indeed loading jokes.
  * Checks that joke is displayed after an interstitial ad on an Android device.
  */
 @LargeTest
@@ -36,7 +37,8 @@ public class ShowJokeWithInterstitialAdTest {
     private IdlingResource mIdlingResource;
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule
+            = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void registerIdlingResource() {

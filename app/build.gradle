@@ -84,7 +84,7 @@ dependencies {
  * Starts the GCE dev server, runs all the Android tests, and shuts down the dev server.
  * https://stackoverflow.com/q/47384356/9682456
  */
-task runAndroidTests {
+task runAllAndroidTests {
     group 'verification'
     dependsOn 'startBackend', 'runInstrumentedTests', 'stopBackend'
     doLast {

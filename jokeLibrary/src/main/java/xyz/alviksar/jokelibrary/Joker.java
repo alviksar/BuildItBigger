@@ -5,7 +5,7 @@ package xyz.alviksar.jokelibrary;
  */
 
 public class Joker {
-    private static String jokes[] = {
+    private static final String[] jokes = {
             "The past does not repeat itself, but it rhymes.",
             "Few things are more irritating than when someone who is wrong is also very effective in making his point.",
             "If you find yourself in a hole, stop digging.",
